@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frutinovela AI: Ultimate Past Tense Battle</title>
+    <style>
+        :root {
+            --bg-dark: #060112;
+            --card-bg: #140628;
+            --card-border: #4a1082;
+            --accent-aura: #e100ff;
+            --accent-cyan: #00f0ff;
+            --accent-gold: #ffe600;
+            --accent-danger: #ff0055;
+            --banana-yellow: #ffe600;
+            --avocado-green: #52a329;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Impact, Arial, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 12px;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(225, 0, 255, 0.3) 0%, transparent 65%),
+                radial-gradient(circle at 50% 100%, rgba(0, 240, 255, 0.2) 0%, transparent 65%);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            color: #fff;
+            text-shadow: 0 0 15px var(--accent-aura), 0 0 25px var(--accent-cyan);
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            color: var(--accent-cyan);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Top Bar Dashboard */
+        .dashboard {
+            width: 100%;
+            max-width: 850px;
+            background: var(--card-bg);
+            border: 2px solid var(--card-border);
+            border-radius: 16px;
+            padding: 10px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.8);
+        }
+
+        .aura-pill {
+            background: linear-gradient(135deg, rgba(225, 0, 255, 0.4), rgba(0, 240, 255, 0.3));
+            border: 2px solid var(--accent-aura);
+            padding: 5px 18px;
+            border-radius: 20px;
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+        }
+
+        .power-bar-bg {
+            width: 170px;
+            height: 14px;
+            background: #1e0538;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--accent-aura);
+        }
+
+        .power-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-aura), var(--accent-cyan));
+            box-shadow: 0 0 12px var(--accent-cyan);
+            transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Frutinovela AI Viewport */
+        .stage-viewport {
+            width: 100%;
+            max-width: 850px;
+            height: 330px;
+            background: radial-gradient(ellipse at bottom, #3b0b6b 0%, #060012 85%);
+            border: 3px solid var(--accent-aura);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 12px;
+            box-shadow: inset 0 0 50px rgba(225, 0, 255, 0.3), 0 12px 35px rgba(0,0,0,0.9);
+            perspective: 1000px;
+        }
+
+        .dialogue-banner {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(10, 1, 24, 0.92);
+            border: 2px solid var(--accent-cyan);
+            padding: 8px 24px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+            text-shadow: 0 0 10px var(--accent-gold);
+            z-index: 50;
+            text-align: center;
+            white-space: nowrap;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+
+        .ring-floor {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: linear-gradient(0deg, rgba(225, 0, 255, 0.4), transparent);
+            border-top: 2px solid var(--accent-cyan);
+        }
+
+        /* ARTICULATED RIGGING & ORGANIC TRANSFORM ORIGINS */
+        .fruit-container {
+            position: absolute;
+            bottom: 25px;
+            width: 180px;
+            height: 250px;
+            z-index: 10;
+            transition: transform 0.3s ease;
+        }
+
+        #platano-rig { left: 80px; }
+        #aguacate-rig { right: 80px; }
+
+        /* Smooth Joint Origins */
+        .joint-shoulder-r { transform-origin: 135px 100px; }
+        .joint-elbow-r    { transform-origin: 150px 135px; }
+        .joint-shoulder-l { transform-origin: 65px 100px; }
+        .joint-elbow-l    { transform-origin: 50px 135px; }
+        .joint-hip-l      { transform-origin: 80px 175px; }
+        .joint-knee-l     { transform-origin: 75px 205px; }
+        .joint-hip-r      { transform-origin: 120px 175px; }
+        .joint-knee-r     { transform-origin: 125px 205px; }
+        .joint-head       { transform-origin: 100px 70px; }
+        .joint-body       { transform-origin: 100px 140px; }
+        .chain-pendant    { transform-origin: 100px 95px; }
+
+        /* IDLE ORGANIC BREATHING */
+        .idle-fluid .joint-body {
+            animation: organicIdle 3s infinite ease-in-out;
+        }
+        .idle-fluid .chain-pendant {
+            animation: chainSway 3s infinite ease-in-out;
+        }
+        @keyframes organicIdle {
+            0%, 100% { transform: translateY(0) scale(1, 1); }
+            50% { transform: translateY(-4px) scale(0.99, 1.02); }
+        }
+        @keyframes chainSway {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        /* ---------------------------------------------------- */
+        /* ULTRA-FLUID ORGANIC MOVEMENT KEYFRAMES (CUBIC-BEZIER) */
+        /* ---------------------------------------------------- */
+
+        /* 1. YAMAL STEP */
+        .do-yamal {
+            animation: yamalRoot 1.8s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+        }
+        .do-yamal .joint-body { animation: yamalBodyBounce 0.45s infinite alternate ease-in-out; }
+        .do-yamal .joint-hip-l { animation: yamalLegL 0.45s infinite alternate cubic-bezier(0.37, 0, 0.63, 1); }
+        .do-yamal .joint-hip-r { animation: yamalLegR 0.45s infinite alternate cubic-bezier(0.37, 0, 0.63, 1); }
+        .do-yamal .joint-shoulder-l { animation: yamalArmL 0.45s infinite alternate cubic-bezier(0.37, 0, 0.63, 1); }
+        .do-yamal .joint-shoulder-r { animation: yamalArmR 0.45s infinite alternate cubic-bezier(0.37, 0, 0.63, 1); }
+
+        @keyframes yamalRoot {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(50px) scale(1.05, 0.95); }
+            50% { transform: translateX(140px) scale(0.95, 1.05); }
+            80% { transform: translateX(70px) scale(1.02, 0.98); }
+            100% { transform: translateX(0); }
+        }
+        @keyframes yamalBodyBounce {
+            0% { transform: translateY(0) rotate(-4deg); }
+            100% { transform: translateY(-10px) rotate(4deg); }
+        }
+        @keyframes yamalLegL {
+            0% { transform: rotate(-30deg) translateY(0); }
+            100% { transform: rotate(20deg) translateY(-8px); }
+        }
+        @keyframes yamalLegR {
+            0% { transform: rotate(20deg) translateY(-8px); }
+            100% { transform: rotate(-30deg) translateY(0); }
+        }
+        @keyframes yamalArmL {
+            0% { transform: rotate(-45deg); }
+            100% { transform: rotate(35deg); }
+        }
+        @keyframes yamalArmR {
+            0% { transform: rotate(35deg); }
+            100% { transform: rotate(-45deg); }
+        }
+
+        /* 2. SCUBA FLEX */
+        .do-scuba {
+            animation: scubaRoot 1.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .do-scuba .joint-body { animation: scubaSquashStretch 1.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .do-scuba .joint-shoulder-r { animation: scubaShoulderR 1.6s ease-in-out; }
+        .do-scuba .joint-elbow-r    { animation: scubaElbowR 1.6s ease-in-out; }
+        .do-scuba .joint-shoulder-l { animation: scubaShoulderL 1.6s ease-in-out; }
+        .do-scuba .joint-elbow-l    { animation: scubaElbowL 1.6s ease-in-out; }
+
+        @keyframes scubaRoot {
+            0% { transform: scale(1); }
+            20% { transform: translateY(15px) scale(1.1, 0.85); }
+            50%, 80% { transform: translateX(110px) translateY(-20px) scale(1.25); filter: drop-shadow(0 0 25px var(--accent-cyan)); }
+            100% { transform: scale(1); }
+        }
+        @keyframes scubaSquashStretch {
+            0%, 100% { transform: scale(1, 1); }
+            20% { transform: scale(1.15, 0.82); }
+            50%, 80% { transform: scale(0.9, 1.2); }
+        }
+        @keyframes scubaShoulderR {
+            0%, 100% { transform: rotate(0deg); }
+            35%, 80% { transform: rotate(-105deg); }
+        }
+        @keyframes scubaElbowR {
+            0%, 100% { transform: rotate(0deg); }
+            35%, 80% { transform: rotate(-115deg); }
+        }
+        @keyframes scubaShoulderL {
+            0%, 100% { transform: rotate(0deg); }
+            35%, 80% { transform: rotate(105deg); }
+        }
+        @keyframes scubaElbowL {
+            0%, 100% { transform: rotate(0deg); }
+            35%, 80% { transform: rotate(115deg); }
+        }
+
+        /* 3. EL 67 BLAST */
+        .do-67 {
+            animation: blastRoot67 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .do-67 .joint-shoulder-r { animation: armCrossR 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .do-67 .joint-shoulder-l { animation: armCrossL 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+        @keyframes blastRoot67 {
+            0% { transform: scale(1); }
+            25% { transform: translateX(-30px) rotate(-6deg) scale(0.95); }
+            50%, 80% { transform: translateX(150px) rotate(4deg) scale(1.3); filter: drop-shadow(0 0 30px #00f0ff); }
+            100% { transform: scale(1); }
+        }
+        @keyframes armCrossR {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(45deg); }
+            50%, 80% { transform: rotate(-95deg); }
+        }
+        @keyframes armCrossL {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-45deg); }
+            50%, 80% { transform: rotate(-85deg); }
+        }
+
+        /* 4. MEWING SUPREME */
+        .do-mewing {
+            animation: mewingRoot 1.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .do-mewing .joint-shoulder-r { animation: mewingArmRise 1.8s cubic-bezier(0.25, 1, 0.5, 1); }
+        .do-mewing .joint-elbow-r    { animation: mewingElbowBend 1.8s cubic-bezier(0.25, 1, 0.5, 1); }
+        .do-mewing .joint-head       { animation: mewingHeadTilt 1.8s ease-in-out; }
+        .do-mewing #jawline-glow     { animation: jawShine 1.8s ease-in-out; }
+
+        @keyframes mewingRoot {
+            0%, 100% { transform: scale(1); }
+            30%, 80% { transform: translateY(-25px) scale(1.4); filter: drop-shadow(0 0 35px var(--accent-aura)); }
+        }
+        @keyframes mewingArmRise {
+            0%, 100% { transform: rotate(0deg); }
+            30%, 80% { transform: rotate(-132deg); }
+        }
+        @keyframes mewingElbowBend {
+            0%, 100% { transform: rotate(0deg); }
+            30%, 80% { transform: rotate(-72deg); }
+        }
+        @keyframes mewingHeadTilt {
+            0%, 100% { transform: rotate(0deg); }
+            30%, 80% { transform: rotate(-14deg); }
+        }
+        @keyframes jawShine {
+            0%, 100% { stroke-width: 0; opacity: 0; }
+            30%, 80% { stroke-width: 4px; opacity: 1; filter: drop-shadow(0 0 10px #00f0ff); }
+        }
+
+        /* Energy Projectile Wave */
+        .energy-wave {
+            position: absolute;
+            top: 125px;
+            left: 230px;
+            width: 70px;
+            height: 70px;
+            background: radial-gradient(circle, #00f0ff 20%, #e100ff 80%);
+            border-radius: 50%;
+            box-shadow: 0 0 35px #00f0ff;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+        }
+        .shoot-wave {
+            animation: waveBlast 0.65s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+        }
+        @keyframes waveBlast {
+            0% { opacity: 1; transform: scale(0.4) translateX(0); }
+            100% { opacity: 0; transform: scale(2.8) translateX(360px); }
+        }
+
+        /* Rival Reaction Animation */
+        .rival-hit {
+            animation: rivalShake 0.55s ease;
+        }
+        @keyframes rivalShake {
+            0% { transform: translateX(0); filter: brightness(2.5) drop-shadow(0 0 25px red); }
+            20% { transform: translateX(45px) rotate(28deg); }
+            50% { transform: translateX(-20px) rotate(-12deg); }
+            100% { transform: translateX(0); }
+        }
+
+        /* Moves Grid Buttons */
+        .moves-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            width: 100%;
+            max-width: 850px;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 650px) {
+            .moves-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .move-card {
+            background: linear-gradient(145deg, #240842, #0d021a);
+            border: 2px solid var(--card-border);
+            border-radius: 14px;
+            padding: 10px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .move-card:hover:not(:disabled) {
+            border-color: var(--accent-cyan);
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(0, 240, 255, 0.4);
+            background: linear-gradient(145deg, #3c0f6b, #190333);
+        }
+
+        .move-card:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .move-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+        }
+
+        .move-cost {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--accent-cyan);
+            background: rgba(0, 240, 255, 0.15);
+            padding: 2px 10px;
+            border-radius: 10px;
+        }
+
+        /* Quiz Box */
+        .quiz-card {
+            width: 100%;
+            max-width: 850px;
+            background: var(--card-bg);
+            border: 2px solid var(--accent-aura);
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .q-badge {
+            background: var(--accent-aura);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+
+        .q-title {
+            font-size: 1.15rem;
+            margin: 12px 0;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .q-input {
+            flex: 1;
+            background: #090117;
+            border: 2px solid var(--card-border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .q-input:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+        }
+
+        .btn-submit {
+            background: linear-gradient(90deg, var(--accent-aura), #9900ff);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 0.2s;
+            box-shadow: 0 4px 15px rgba(225, 0, 255, 0.4);
+        }
+
+        .btn-submit:hover {
+            transform: scale(1.04);
+        }
+
+        .feedback-area {
+            margin-top: 10px;
+            min-height: 24px;
+            font-weight: 800;
+            font-size: 0.95rem;
+        }
+        .feedback-area.correct { color: #00ff88; }
+        .feedback-area.wrong { color: var(--accent-danger); }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🍌 Frutinovela AI: Past Tense Battle 🥑</h1>
+        <p>Master English Simple Past to unlock fluid AI moves!</p>
+    </div>
+
+    <!-- Dashboard Bar -->
+    <div class="dashboard">
+        <div>SIGMA AURA: <span class="aura-pill" id="aura-val">0</span> ⚡</div>
+        <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:0.8rem; color:#b3a0d0;">ENERGY BAR</span>
+            <div class="power-bar-bg">
+                <div class="power-bar-fill" id="power-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Frutinovela AI Viewport Stage -->
+    <div class="stage-viewport">
+        <div class="dialogue-banner" id="banner-text">Answer questions to farm Aura Points!</div>
+        <div class="ring-floor"></div>
+
+        <!-- Energy Projectile Wave -->
+        <div class="energy-wave" id="energy-projectile"></div>
+
+        <!-- SIGMA BANANA RIG -->
+        <div class="fruit-container idle-fluid" id="platano-rig">
+            <svg viewBox="0 0 200 250" width="100%" height="100%">
+                
+                <g class="joint-body">
+                    <path d="M70,40 Q130,30 135,110 Q140,180 80,180 Q60,180 65,110 Z" fill="var(--banana-yellow)" stroke="#d4be00" stroke-width="3"/>
+                    <path d="M75,45 Q120,40 125,110 Q130,170 85,172" fill="none" stroke="#fff" stroke-width="4" opacity="0.4"/>
+                    
+                    <g class="chain-pendant">
+                        <path d="M75,95 Q100,120 125,95" stroke="var(--accent-gold)" stroke-width="4" fill="none"/>
+                        <circle cx="100" cy="112" r="6" fill="var(--accent-gold)"/>
+                    </g>
+
+                    <g class="joint-head">
+                        <rect x="72" y="60" width="56" height="18" rx="4" fill="#000"/>
+                        <line x1="72" y1="66" x2="128" y2="66" stroke="var(--accent-cyan)" stroke-width="3"/>
+                        <ellipse cx="100" cy="88" rx="8" ry="4" fill="#660000"/>
+                        <path id="jawline-glow" d="M70,80 L100,105 L130,80" stroke="var(--accent-cyan)" stroke-width="0" fill="none" opacity="0"/>
+                    </g>
+                </g>
+
+                <g class="joint-hip-l">
+                    <line x1="80" y1="175" x2="75" y2="205" stroke="#111" stroke-width="8" stroke-linecap="round"/>
+                    <g class="joint-knee-l">
+                        <line x1="75" y1="205" x2="70" y2="230" stroke="#222" stroke-width="8" stroke-linecap="round"/>
+                        <path d="M55,228 L78,228 L78,238 L55,238 Z" fill="var(--accent-cyan)" rx="2"/>
+                    </g>
+                </g>
+
+                <g class="joint-hip-r">
+                    <line x1="120" y1="175" x2="125" y2="205" stroke="#111" stroke-width="8" stroke-linecap="round"/>
+                    <g class="joint-knee-r">
+                        <line x1="125" y1="205" x2="130" y2="230" stroke="#222" stroke-width="8" stroke-linecap="round"/>
+                        <path d="M115,228 L138,228 L138,238 L115,238 Z" fill="var(--accent-cyan)" rx="2"/>
+                    </g>
+                </g>
+
+                <g class="joint-shoulder-l">
+                    <line x1="65" y1="100" x2="50" y2="135" stroke="var(--banana-yellow)" stroke-width="9" stroke-linecap="round"/>
+                    <g class="joint-elbow-l">
+                        <line x1="50" y1="135" x2="45" y2="165" stroke="#f4c286" stroke-width="7" stroke-linecap="round"/>
+                        <circle cx="45" cy="167" r="6" fill="#f4c286"/>
+                    </g>
+                </g>
+
+                <g class="joint-shoulder-r">
+                    <line x1="135" y1="100" x2="150" y2="135" stroke="var(--banana-yellow)" stroke-width="9" stroke-linecap="round"/>
+                    <g class="joint-elbow-r">
+                        <line x1="150" y1="135" x2="155" y2="165" stroke="#f4c286" stroke-width="7" stroke-linecap="round"/>
+                        <circle cx="155" cy="167" r="6" fill="#f4c286"/>
+                        <rect x="153" y="169" width="4" height="10" fill="#f4c286" rx="2"/>
+                    </g>
+                </g>
+
+            </svg>
+        </div>
+
+        <!-- CRINGE AVOCADO RIG -->
+        <div class="fruit-container idle-fluid" id="aguacate-rig">
+            <svg viewBox="0 0 200 250" width="100%" height="100%">
+                <path d="M60,60 Q100,20 140,60 Q160,130 140,180 Q100,210 60,180 Q40,130 60,60 Z" fill="var(--avocado-green)" stroke="#336618" stroke-width="4"/>
+                <circle cx="100" cy="140" r="28" fill="#6e3c13"/>
+                <circle cx="80" cy="75" r="5" fill="#000"/>
+                <circle cx="120" cy="75" r="5" fill="#000"/>
+                <path d="M130,65 Q135,55 137,65 Z" fill="var(--accent-cyan)"/>
+                <ellipse cx="100" cy="95" rx="10" ry="6" fill="#200"/>
+                <rect x="75" y="180" width="10" height="50" fill="#222"/>
+                <rect x="115" y="180" width="10" height="50" fill="#222"/>
+            </svg>
+        </div>
+
+    </div>
+
+    <!-- Moves Grid Buttons -->
+    <div class="moves-grid">
+        <button class="move-card" id="btn-yamal" onclick="performFluidMove('yamal', 15)" disabled>
+            <span class="move-title">🕺 Yamal Step</span>
+            <span class="move-cost">15 Aura ⚡</span>
+        </button>
+        <button class="move-card" id="btn-scuba" onclick="performFluidMove('scuba', 30)" disabled>
+            <span class="move-title">🥽 Scuba Flex</span>
+            <span class="move-cost">30 Aura ⚡</span>
+        </button>
+        <button class="move-card" id="btn-67" onclick="performFluidMove('67', 50)" disabled>
+            <span class="move-title">🔢 The 67 Blast</span>
+            <span class="move-cost">50 Aura ⚡</span>
+        </button>
+        <button class="move-card" id="btn-mewing" onclick="performFluidMove('mewing', 70)" disabled>
+            <span class="move-title">🗿 Mewing Supreme</span>
+            <span class="move-cost">70 Aura ⚡</span>
+        </button>
+    </div>
+
+    <!-- Quiz Box -->
+    <div class="quiz-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="q-badge" id="q-cat">VERB CONJUGATION</span>
+            <span style="font-size:0.85rem; color:#b3a0d0;">+20 Aura per correct answer</span>
+        </div>
+        
+        <div class="q-title" id="q-text">Loading question...</div>
+
+        <form id="quiz-form" onsubmit="checkQuizAnswer(event)">
+            <div class="input-row">
+                <input type="text" id="user-input" class="q-input" placeholder="Type past tense verb..." autocomplete="off" required>
+                <button type="submit" class="btn-submit">Submit ✨</button>
+            </div>
+        </form>
+
+        <div class="feedback-area" id="feedback"></div>
+    </div>
+
+    <script>
+        // MASSIVE QUESTION BANK (60+ VARIED SIMPLE PAST QUESTIONS)
+        const questionsBank = [
+            // Regular Verbs
+            { cat: "Regular Verbs", q: "Conjugate to Simple Past: 'Yesterday, she _______ (walk) to school.'", a: "walked" },
+            { cat: "Regular Verbs", q: "Conjugate to Simple Past: 'They _______ (visit) their grandparents last weekend.'", a: "visited" },
+            { cat: "Regular Verbs", q: "Conjugate to Simple Past: 'We _______ (watch) a movie last night.'", a: "watched" },
+            { cat: "Regular Verbs", q: "Conjugate to Simple Past: 'He _______ (cook) dinner for the family.'", a: "cooked" },
+            { cat: "Regular Verbs", q: "Conjugate to Simple Past: 'I _______ (clean) my bedroom on Saturday.'", a: "cleaned" },
+            { cat: "Regular Verbs", q: "Conjugate to Simple Past: 'She _______ (study) hard for the English exam.'", a: "studied" },
+            { cat: "Regular Verbs", q: "Conjugate to Simple Past: 'The rain _______ (stop) an hour ago.'", a: "stopped" },
+            { cat: "Regular Verbs", q: "Conjugate to Simple Past: 'They _______ (listen) to music all afternoon.'", a: "listened" },
+            { cat: "Regular Verbs", q: "Conjugate to Simple Past: 'He _______ (paint) a cool picture yesterday.'", a: "painted" },
+            { cat: "Regular Verbs", q: "Conjugate to Simple Past: 'We _______ (arrive) at the airport early.'", a: "arrived" },
+            { cat: "Regular Verbs", q: "Conjugate to Simple Past: 'She _______ (call) her best friend on the phone.'", a: "called" },
+            { cat: "Regular Verbs", q: "Conjugate to Simple Past: 'I _______ (drop) my glass on the floor.'", a: "dropped" },
+            { cat: "Regular Verbs", q: "Conjugate to Simple Past: 'He _______ (try) to fix the broken bicycle.'", a: "tried" },
+            { cat: "Regular Verbs", q: "Conjugate to Simple Past: 'They _______ (dance) at the party last night.'", a: "danced" },
+            { cat: "Regular Verbs", q: "Conjugate to Simple Past: 'She _______ (wash) the dishes after dinner.'", a: "washed" },
+
+            // Irregular Verbs
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'She _______ (go) to Paris last summer.'", a: "went" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'We _______ (eat) delicious pizza for lunch.'", a: "ate" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'He _______ (buy) a cool hypebeast hoodie.'", a: "bought" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'I _______ (see) a shooting star last night.'", a: "saw" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'They _______ (come) to the party early.'", a: "came" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'She _______ (give) him a nice birthday present.'", a: "gave" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'He _______ (take) many pictures during the trip.'", a: "took" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'We _______ (make) a huge chocolate cake.'", a: "made" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'She _______ (write) a letter to her friend.'", a: "wrote" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'He _______ (read) an interesting book.'", a: "read" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'They _______ (sleep) for ten hours.'", a: "slept" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'My dad _______ (drive) us to the beach.'", a: "drove" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'We _______ (swim) in the ocean yesterday.'", a: "swam" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'The bird _______ (fly) high over the trees.'", a: "flew" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'He _______ (run) fast and won the race.'", a: "ran" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'She _______ (speak) English with the tourist.'", a: "spoke" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'I _______ (break) my sunglasses yesterday.'", a: "broke" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'He _______ (lose) his wallet at the mall.'", a: "lost" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'They _______ (find) a hidden key under the rug.'", a: "found" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'The teacher _______ (teach) a fun lesson.'", a: "taught" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'He _______ (catch) the ball during the game.'", a: "caught" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'She _______ (think) about the problem all day.'", a: "thought" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'They _______ (bring) drinks to the picnic.'", a: "brought" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'I _______ (forget) my homework at home.'", a: "forgot" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'We _______ (meet) our friends at the cinema.'", a: "met" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'She _______ (sing) her favorite song.'", a: "sang" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'He _______ (drink) a glass of water.'", a: "drank" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'They _______ (build) a treehouse last month.'", a: "built" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'She _______ (wear) a green jacket yesterday.'", a: "wore" },
+            { cat: "Irregular Verbs", q: "Conjugate to Simple Past: 'He _______ (win) the video game tournament.'", a: "won" },
+
+            // Negative Forms
+            { cat: "Negative Forms", q: "Complete with negative past: 'I _______ (not / see) you at the party.'", a: "didn't see" },
+            { cat: "Negative Forms", q: "Complete with negative past: 'She _______ (not / go) to school yesterday.'", a: "didn't go" },
+            { cat: "Negative Forms", q: "Complete with negative past: 'They _______ (not / eat) breakfast this morning.'", a: "didn't eat" },
+            { cat: "Negative Forms", q: "Complete with negative past: 'He _______ (not / like) the scary movie.'", a: "didn't like" },
+            { cat: "Negative Forms", q: "Complete with negative past: 'We _______ (not / buy) the concert tickets.'", a: "didn't buy" },
+            { cat: "Negative Forms", q: "Complete with negative past: 'She _______ (not / finish) her project.'", a: "didn't finish" },
+
+            // Error Correction & Questions
+            { cat: "Error Correction", q: "Correct the wrong verb: 'He runned fast to catch the bus.'", a: "ran" },
+            { cat: "Error Correction", q: "Correct the wrong verb: 'They didn't went to the concert.'", a: "go" },
+            { cat: "Error Correction", q: "Correct the wrong verb: 'She catched the bus on time.'", a: "caught" },
+            { cat: "Error Correction", q: "Correct the wrong verb: 'We buyed a new car yesterday.'", a: "bought" },
+            { cat: "Error Correction", q: "Correct the wrong verb: 'He bringed his guitar to school.'", a: "brought" },
+            { cat: "Questions Form", q: "Complete the question: '_______ you study for the English test?'", a: "did" },
+            { cat: "Questions Form", q: "Complete the question: 'Where _______ they go last night?'", a: "did" },
+            { cat: "Questions Form", q: "Complete the question: 'What _______ she eat for breakfast?'", a: "did" },
+            { cat: "Questions Form", q: "Complete the question: '_______ he call you yesterday?'", a: "did" }
+        ];
+
+        // Fisher-Yates Random Shuffle Algorithm to prevent repeating questions
+        function shuffleQuestions(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        let questions = [...questionsBank];
+        shuffleQuestions(questions); // Shuffle on initial load
+
+        let auraPoints = 0;
+        let qIdx = 0;
+
+        function renderQuestion() {
+            const cur = questions[qIdx];
+            document.getElementById('q-cat').innerText = cur.cat;
+            document.getElementById('q-text').innerText = cur.q;
+            document.getElementById('user-input').value = '';
+            document.getElementById('feedback').innerText = '';
+            document.getElementById('feedback').className = 'feedback-area';
+        }
+
+        function checkQuizAnswer(e) {
+            e.preventDefault(); // PREVENTS PAGE RELOAD
+            
+            const userAns = document.getElementById('user-input').value.trim().toLowerCase();
+            const correctAns = questions[qIdx].a.toLowerCase();
+            const fb = document.getElementById('feedback');
+
+            if (userAns === correctAns) {
+                auraPoints += 20;
+                fb.className = 'feedback-area correct';
+                fb.innerText = "🔥 CORRECT! You earned +20 Aura Points!";
+                updateUI();
+
+                setTimeout(() => {
+                    qIdx++;
+                    // Re-shuffle when all questions are answered so order is never the same
+                    if (qIdx >= questions.length) {
+                        qIdx = 0;
+                        shuffleQuestions(questions);
+                    }
+                    renderQuestion();
+                }, 1000);
+            } else {
+                fb.className = 'feedback-area wrong';
+                fb.innerText = `❌ INCORRECT! The correct simple past verb is: "${questions[qIdx].a}"`;
+            }
+        }
+
+        function updateUI() {
+            document.getElementById('aura-val').innerText = auraPoints;
+            const barFill = Math.min((auraPoints / 100) * 100, 100);
+            document.getElementById('power-bar').style.width = barFill + '%';
+
+            document.getElementById('btn-yamal').disabled = auraPoints < 15;
+            document.getElementById('btn-scuba').disabled = auraPoints < 30;
+            document.getElementById('btn-67').disabled = auraPoints < 50;
+            document.getElementById('btn-mewing').disabled = auraPoints < 70;
+        }
+
+        function performFluidMove(move, cost) {
+            if (auraPoints < cost) return;
+
+            auraPoints -= cost;
+            updateUI();
+
+            const platano = document.getElementById('platano-rig');
+            const aguacate = document.getElementById('aguacate-rig');
+            const banner = document.getElementById('banner-text');
+            const projectile = document.getElementById('energy-projectile');
+
+            // Reset classes
+            platano.className = 'fruit-container idle-fluid';
+            aguacate.className = 'fruit-container idle-fluid';
+            projectile.className = 'energy-wave';
+
+            void platano.offsetWidth; // Trigger CSS reflow
+
+            if (move === 'yamal') {
+                platano.classList.add('do-yamal');
+                banner.innerText = "🕺 SIGMA BANANA PERFORMS FLUID YAMAL 304 SHUFFLE!";
+            } else if (move === 'scuba') {
+                platano.classList.add('do-scuba');
+                banner.innerText = "🥽 SCUBA FLEX: 90-DEGREE BICEP & CHEST CONTRACTION!";
+            } else if (move === '67') {
+                platano.classList.add('do-67');
+                banner.innerText = "🔢 CROSSES ARMS AND LAUNCHES THE 67 BLAST!";
+                setTimeout(() => { projectile.classList.add('shoot-wave'); }, 500);
+            } else if (move === 'mewing') {
+                platano.classList.add('do-mewing');
+                banner.innerText = "🗿 MEWING SUPREME: FINGER TO LIPS (SHHH) & JAWLINE SHINE!";
+            }
+
+            // Impact reaction on Rival
+            setTimeout(() => {
+                aguacate.classList.add('rival-hit');
+            }, 650);
+        }
+
+        // Initialize game
+        renderQuestion();
+    </script>
+</body>
+</html>
